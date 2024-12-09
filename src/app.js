@@ -39,6 +39,55 @@ app.post('/signup', async (req,res)=>{
     
  })
 
+ app.delete('/user', async (req,res)=>{
+    const userId = req.body.userId;
+    console.log(userId)
+    try{
+        const user = await User.findByIdAndDelete(userId);
+        res.send(`${user.firstName} data has been deleted` );
+
+    }catch(err){
+        res.status(400).send("Somthing wrong")
+    }
+ })
+
+ app.patch('/login', async (req,res) =>{
+       const id = req.body.id;
+       const data = req.body;
+       try{
+        await User.findByIdAndUpdate(id,data);
+        res.send("user updated")
+       }catch(err){
+        res.status(400).send("Somthing Went wrong");
+       }
+ })
+
+
+
+
+
+
+
+
+
+
+
+
+
+  app.patch('/user', async (req,res) => {
+    const data = req.body;
+    const userId = req.body.userId;
+    console.log(userId ,data)
+    try{
+        await User.findByIdAndUpdate(userId, data);
+        res.send("user data updated");
+    }catch(err){
+        res.status(400).send("unable to Add " +err.message)
+    }
+   
+  }
+)
+
 
 
 
