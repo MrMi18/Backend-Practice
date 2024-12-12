@@ -11,19 +11,13 @@ const feedRouter = require("../routers/feed");
 const app = express();
 
 app.use(cookieParser());  // Parses cookies
-app.use(express.json());  // Parses JSON bodies
+app.use(express.json());  // Parses JSON bodies.
 
 
 
 app.use('/',authRouter);
 app.use('/', profileRouter);
 app.use('/', feedRouter);
-
-
-
-
-
-  
 
 
 
