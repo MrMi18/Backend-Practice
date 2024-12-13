@@ -44,12 +44,10 @@ authRouter.post('/login', async (req,res) =>{
 
             const token = await jwt.sign({_id:user._id},"Shane@123#",{expiresIn:'7d'});
 
-            console.log(token);
-
 
             res.cookie("token",token)
 
-            res.send("Login Successfully");
+            res.send(`Login Successfull Wellcome ${user.firstName}`);
         }else{
             throw new Error("Wrong email or password ");
         }
@@ -58,6 +56,13 @@ authRouter.post('/login', async (req,res) =>{
     }
     
 });
+
+authRouter.post('/logout',(req,res)=>{
+    // const {token} = req.cookies;
+    res.clearCookie('token');
+    res.send("Logout Sucessfull");
+
+})
 
 module.exports = authRouter;
 
