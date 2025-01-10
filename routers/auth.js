@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const signupValidation = require('../Helper/signupValidation');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const { userAuth } = require('../middleware/utils');
+const passwordValidation = require('../Helper/passwordValidatin')
 
 const authRouter = express.Router();
 authRouter.post('/signup', async (req,res)=>{
@@ -61,6 +63,29 @@ authRouter.post('/logout',(req,res)=>{
     // const {token} = req.cookies;
     res.clearCookie('token');
     res.send("Logout Sucessfull");
+
+})
+
+authRouter.patch('/user/edit/password/:userId', userAuth, async(req,res) =>{
+    try{
+    const user = req.user;
+    const{ oldPassword ,newPassword} = req.body;
+    
+    
+    const isPasswordValid = await bcrypt.compare(oldPassword,user.password);
+    if(!isPasswordValid){
+        throw new Error("Invalid Password Old Password");
+    }
+    
+    passwordValidation(newPassword);
+    
+    const newPasswordHash = await bcrypt.hash(newPassword,10);
+    
+    await User.findByIdAndUpdate(user._id,{password:newPasswordHash});
+    res.send("Password Change sucessfully");
+    }catch(err){
+        res.status(400).send("Error: "+ err.message);
+    }
 
 })
 

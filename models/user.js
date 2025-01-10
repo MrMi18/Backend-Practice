@@ -1,5 +1,6 @@
 const mongoose  = require("mongoose");
-const validator = require("validator")
+const validator = require("validator");
+const { default: isEmail } = require("validator/lib/isEmail");
 
 const userSchema = new mongoose.Schema({
     firstName:{
@@ -57,7 +58,11 @@ const userSchema = new mongoose.Schema({
             if(value.includes(" ")){
                 throw new Error("Spaces are not allowed in password,");
             }
-        }
+           
+            
+        },
+        
+           
         // validate: {
         //     validator: function (value) {
         //         return !value.includes(" "); // Returns `true` if valid

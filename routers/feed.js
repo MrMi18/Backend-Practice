@@ -1,15 +1,17 @@
 const express = require('express');
 
 const {userAuth} = require('../middleware/utils');
+const User = require('../models/user');
 
 const feedRouter = express.Router();
 feedRouter.get('/feed', userAuth, async (req,res)=>{
     try{
 
         const user = req.user;
-        console.log("user"+ user);
+        const allUser = User;
+        // console.log(allUser);
        
-        res.send( user);
+        res.send( "users are:"+allUser);
 
 
     }catch(err){
