@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const authRouter = require("../routers/auth");
 const profileRouter = require("../routers/profile");
 const feedRouter = require("../routers/feed");
+const requestRouter = require("../routers/requests");
 
 
 
@@ -14,10 +15,11 @@ app.use(cookieParser());  // Parses cookies
 app.use(express.json());  // Parses JSON bodies.
 
 
-
+app.use('/', requestRouter);
 app.use('/',authRouter);
 app.use('/', profileRouter);
 app.use('/', feedRouter);
+
 
 
 

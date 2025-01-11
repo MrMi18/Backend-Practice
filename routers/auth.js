@@ -13,19 +13,19 @@ authRouter.post('/signup', async (req,res)=>{
     const{firstName,lastName,password,emailID} = req.body;
 
     try{
-   
+    signupValidation(req);
     const passwordHash = await bcrypt.hash(password,10);
     console.log(passwordHash);
         
     const user = new User({
         firstName,lastName,emailID,password:passwordHash
     });
-        signupValidation(req);
+        
         await user.save();
         res.send("hey suceessfully data send to database");
     }
     catch(err){
-        res.status(400).send("bad Request    "+err.message);
+        res.status(400).send("bad Request "+err.message);
 
     }
 
@@ -89,6 +89,7 @@ authRouter.patch('/user/edit/password/:userId', userAuth, async(req,res) =>{
 
 })
 
+    
 module.exports = authRouter;
 
 

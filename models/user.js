@@ -27,10 +27,11 @@ const userSchema = new mongoose.Schema({
             if(!["male","female"].includes(value)){
                 throw new Error ("gender should be only male or female");
             }
-        }
+        },
+         
     } ,
     photoURL:{
-        typr:String,
+        type:String,
         // validate(value){
         //     if(!validator.isURL(value)){
         //         throw new Error("Enter valid URL")
