@@ -49,7 +49,7 @@ authRouter.post('/login', async (req,res) =>{
 
             res.cookie("token",token)
 
-            res.send(`Login Successfull Wellcome ${user.firstName}`);
+            res.send(`Login Successfull Wellcome ${user.lastName}`);
         }else{
             throw new Error("Wrong email or password ");
         }

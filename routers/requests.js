@@ -2,11 +2,12 @@ const express = require ("express");
 const { userAuth } = require("../middleware/utils");
 const ConnectionRequest = require("../models/connectionRequest");
 const user = require("../models/user");
+const mongoose = require("mongoose");
 
 const requestRouter = express.Router();
 
 
-requestRouter.post("/user/request/send/:status/:userId",  userAuth, async (req,res) => {
+requestRouter.post("/request/send/:status/:userId",  userAuth, async (req,res) => {
 
    
     try{
@@ -57,5 +58,43 @@ requestRouter.post("/user/request/send/:status/:userId",  userAuth, async (req,r
     }
 
 })
+
+requestRouter.post("/request/review/:status/:connectionId", userAuth , async (req,res) =>{
+
+    try{
+        const{status,connectionId} = req.params;
+        
+       const allowedStatus = ["Accepted","Rejected"];
+       if(!allowedStatus.includes(status)){
+         return res.status(400).json("Invalid status type, status should be Accepted or Rejected");
+       }
+       // checking connection id befor becouse it will show caste error agar apan niche handle bhi kare to bhi ye error show karega cast error
+       if (!mongoose.Types.ObjectId.isValid(connectionId)) {
+        return res.status(400).json({ error: "Invalid connection ID format." });
+    }
+        const connectionRequest = await ConnectionRequest.findOne({
+            _id:connectionId,
+            toUserId:req.user._id,
+            status:"Interested"
+            
+        })
+       
+        if(!connectionRequest){
+            console.log("user not ");
+            return res.status(404).send("connection not found");
+        }
+       
+            connectionRequest.status  = status;
+        
+        await connectionRequest.save();
+        res.json(`${connectionRequest.toUserName} ${status} the request of ${connectionRequest.fromUserName} `);
+
+
+    }
+    catch(err){
+        res.status(400).json("Error : " + err);
+    }
+
+} )
 
 module.exports = requestRouter;
