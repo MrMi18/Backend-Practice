@@ -5,6 +5,7 @@ const authRouter = require("../routers/auth");
 const profileRouter = require("../routers/profile");
 const feedRouter = require("../routers/feed");
 const requestRouter = require("../routers/requests");
+const userRouter = require("../routers/user");
 
 
 
@@ -19,6 +20,7 @@ app.use('/', requestRouter);
 app.use('/',authRouter);
 app.use('/', profileRouter);
 app.use('/', feedRouter);
+app.use('/', userRouter);
 
 
 

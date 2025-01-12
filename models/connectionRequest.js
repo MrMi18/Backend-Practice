@@ -1,12 +1,15 @@
 
 const mongoose = require("mongoose");
 const { applyTimestamps } = require("./user");
+const User = require('./user')
 
 const connectionRequestSchema = new mongoose.Schema({
 
         fromUserId :{
             type : mongoose.Schema.Types.ObjectId,
+            ref : "User",
             required : true,
+            
         },
         fromUserName:{
             type: String,
