@@ -9,6 +9,14 @@ const allowedUserInfo = "firstName lastName Age skill designation";
 feedRouter.get('/feed', userAuth, async (req,res)=>{
     try{
 
+
+        const page = parseInt (req.query.page)||1;
+
+        let limit = parseInt (req.query.limit)||10;
+        limit = limit>50?50:limit;
+        const skip = (page-1)*limit;
+       
+
         const user = req.user;
 
         const usersToBeHide = await ConnectionRequest.find(
@@ -30,7 +38,9 @@ feedRouter.get('/feed', userAuth, async (req,res)=>{
         const allUser = await User.find(
             {
                _id:{ $nin: [...hiddenUserId, user._id] }
-        } ).select(allowedUserInfo);
+        } ).select(allowedUserInfo)
+        .skip(skip).limit(limit);
+        
 
         
        
