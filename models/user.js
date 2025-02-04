@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         minLength:3,
         maxLength:10,
     },
+    
     lastName:{
         type:String,
         minLength:3,
@@ -18,13 +19,14 @@ const userSchema = new mongoose.Schema({
     },
     Age:{
         type:Number,
-        min:13,
+        min:16,
         
     } ,
     gender:{
         type:String,
+        default:"Not Specified",
         validate(value){
-            if(!["male","female"].includes(value)){
+            if(!["male","female","Not Specified"].includes(value)){
                 throw new Error ("gender should be only male or female");
             }
         },
@@ -45,7 +47,7 @@ const userSchema = new mongoose.Schema({
         lowercase:true,
         validate(value){
             if(!validator.isEmail(value)){
-                throw new Error("Enter valid URL")
+                throw new Error ("Please enter valid mail id");
             }
         }
 

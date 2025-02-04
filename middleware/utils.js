@@ -8,7 +8,7 @@ const userAuth = async(req,res,next) =>{
     const {token } = cookies;
 
     if(!token){
-        throw new Error("Invalid Token please login again");
+        return res.status(401).send("Invalid Token please login again");
     }
 
     const decoded = await jwt.verify(token,"Shane@123#");
@@ -20,7 +20,8 @@ const userAuth = async(req,res,next) =>{
     
 
     if(!user){
-        throw new Error("User not found please login again");
+        return res.status(401).send("User not found please login again");
+        
     }
     req.user = user;
     next();

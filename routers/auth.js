@@ -1,5 +1,4 @@
 const express = require('express');
-
 const jwt = require('jsonwebtoken');
 const signupValidation = require('../Helper/signupValidation');
 const User = require('../models/user');
@@ -13,6 +12,10 @@ authRouter.post('/signup', async (req,res)=>{
     const{firstName,lastName,password,emailID} = req.body;
 
     try{
+        const alreadyExist = await DishifyUser.findOne({emailId:emailId});
+        if(alreadyExist){
+            return res.send("User already exist with this email");
+        }
     signupValidation(req);
     const passwordHash = await bcrypt.hash(password,10);
     console.log(passwordHash);
@@ -20,26 +23,33 @@ authRouter.post('/signup', async (req,res)=>{
     const user = new User({
         firstName,lastName,emailID,password:passwordHash
     });
-        
+    
         await user.save();
-        res.send("hey suceessfully data send to database");
+        
+        const token = await jwt.sign({_id:user._id},"Shane@123#",{expiresIn:'7d'});
+
+
+            res.cookie("token",token)
+
+            res.json({data:user});
     }
     catch(err){
-        res.status(400).send("bad Request "+err.message);
+        console.log(err);
+        res.status(400).json({data:err.message});
 
     }
 
 });
 
 authRouter.post('/login', async (req,res) =>{
-
-    const {emailID,password} = req.body;
+    
+    const {emailId,password} = req.body;
 
     try{
-        const user =  await User.findOne({emailID:emailID});
+        const user =  await User.findOne({emailID:emailId});
         
         if(!user){
-            throw new Error("Wrong email or password  ");
+            return res.status(400).send("Wrong email or password  ");
         }
         const isPasswordValid = await bcrypt.compare(password,user.password);
         if(isPasswordValid){
@@ -49,10 +59,12 @@ authRouter.post('/login', async (req,res) =>{
 
             res.cookie("token",token)
 
-            res.send(`Login Successfull Wellcome ${user.lastName}`);
+            res.json({data:user});
         }else{
-            throw new Error("Wrong email or password ");
+            return res.status(401).send("Wrong email or password !");
+           
         }
+        
     }catch(err){
         res.status(400).send("Error: "+ err.message);
     }
