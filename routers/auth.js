@@ -12,13 +12,13 @@ authRouter.post('/signup', async (req,res)=>{
     const{firstName,lastName,password,emailID} = req.body;
 
     try{
-        const alreadyExist = await DishifyUser.findOne({emailId:emailId});
+        const alreadyExist = await User.findOne({emailId:emailID});
         if(alreadyExist){
             return res.send("User already exist with this email");
         }
     signupValidation(req);
     const passwordHash = await bcrypt.hash(password,10);
-    console.log(passwordHash);
+    // console.log(passwordHash);
         
     const user = new User({
         firstName,lastName,emailID,password:passwordHash

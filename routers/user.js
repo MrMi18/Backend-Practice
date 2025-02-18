@@ -26,7 +26,7 @@ userRouter.get("/user/requests/list", userAuth , async (req,res) =>{
 })
 
 
-userRouter.get("/user/connections", userAuth, async (req,res) =>{
+userRouter.get( "/user/connections", userAuth, async (req,res) =>{
     try{
 
         const{user} = req;

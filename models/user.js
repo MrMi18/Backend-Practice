@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         minLength:3,
         maxLength:10,
+        required:true
 
     },
     Age:{
@@ -34,11 +35,6 @@ const userSchema = new mongoose.Schema({
     } ,
     photoURL:{
         type:String,
-        // validate(value){
-        //     if(!validator.isURL(value)){
-        //         throw new Error("Enter valid URL")
-        //     }
-        // }
     },
     emailID:{
         type:String,
@@ -64,21 +60,16 @@ const userSchema = new mongoose.Schema({
            
             
         },
-        
-           
-        // validate: {
-        //     validator: function (value) {
-        //         return !value.includes(" "); // Returns `true` if valid
-        //     },
-        //     message: "Spaces are not allowed in the password",
-        // },
-        
     },
     deignation:{
         type:String,
         default:"Software Engineer",
     },
-    skill:[String]
+    skill:[String],
+    about:{
+        type:String,
+        maxLength:50,
+    }
 },
 {
     timestamps:true,
