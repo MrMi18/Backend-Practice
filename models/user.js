@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
             
         },
     },
-    deignation:{
+    designation:{
         type:String,
         default:"Software Engineer",
     },
@@ -69,7 +69,17 @@ const userSchema = new mongoose.Schema({
     about:{
         type:String,
         maxLength:50,
-    }
+    },
+    city:{
+        type:String,
+        maxLength:100,
+    },
+    
+    company:{
+        type:String,
+        maxLength:50,
+    },
+    
 },
 {
     timestamps:true,
